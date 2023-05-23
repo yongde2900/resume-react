@@ -47,7 +47,7 @@ export default function Message(props) {
   return (
     <div className="bg-white">
       <div>
-        <div className="-my-10">
+        <div className="my-10">
           {comments.map((comment, commentIdx) => (
             <div
               key={comment.id}
@@ -62,7 +62,7 @@ export default function Message(props) {
                 <div className="justify-between flex">
                   <div className="text-left">
                     <h3 className="font-medium text-gray-900 text-left">
-                      {comment.user.name}
+                      {comment.user ? comment.user.name : "anonymous"}
                     </h3>
                     <p>
                       <time dateTime={comment.created_at}>
@@ -71,15 +71,17 @@ export default function Message(props) {
                     </p>
                   </div>
                   <div className="text-right">
-                    {user.id === comment.user.id ? (
-                      <MoreAction
-                        handleDelete={() => {
-                          handleDelete(comment.id);
-                        }}
-                        setEditComment={() => {
-                          setEditComment(comment.id);
-                        }}
-                      />
+                    {user.id ? (
+                      user.id === comment.user?.id ? (
+                        <MoreAction
+                          handleDelete={() => {
+                            handleDelete(comment.id);
+                          }}
+                          setEditComment={() => {
+                            setEditComment(comment.id);
+                          }}
+                        />
+                      ) : null
                     ) : null}
                   </div>
                 </div>

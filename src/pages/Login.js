@@ -1,21 +1,40 @@
 import { useState } from "react";
 import axios from "axios";
+import { fetchUser, login } from "../api";
+import { useNavigate } from "react-router";
 
-export default function Register() {
+/*
+  This example requires some changes to your config:
+  
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ],
+  }
+  ```
+*/
+export default function Example(props) {
+  const navigate = useNavigate();
+  const user = props.user;
+  const setUser = props.setUser;
   async function handleSubmit(event) {
-    event.preventDefault();
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-    const name = event.target.name.value;
-    const confirmPassword = event.target.confirmPassword.value;
+    try {
+      event.preventDefault();
+      const email = event.target.email.value;
+      const password = event.target.password.value;
+      const result = await login(email, password);
 
-    const result = await axios.post("http://localhost:80/api/users", {
-      email,
-      name,
-      password,
-      confirm_password: confirmPassword,
-    });
-    console.log(result.data);
+      await localStorage.setItem("token", result.data.access_token);
+      const user = await fetchUser();
+      setUser(user.data);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -36,7 +55,7 @@ export default function Register() {
             alt="Your Company"
           />
           <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Register your account
+            Sign in to your account
           </h2>
         </div>
 
@@ -67,22 +86,6 @@ export default function Register() {
                   htmlFor="password"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Name
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="name"
-                    name="name"
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
                   Password
                 </label>
                 <div className="mt-2">
@@ -96,23 +99,31 @@ export default function Register() {
                   />
                 </div>
               </div>
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Confirm Password
-                </label>
-                <div className="mt-2">
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
                   <input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type="confirmPassword"
-                    autoComplete="current-password"
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    id="remember-me"
+                    name="remember-me"
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
+                  <label
+                    htmlFor="remember-me"
+                    className="ml-3 block text-sm leading-6 text-gray-900"
+                  >
+                    Remember me
+                  </label>
                 </div>
+                {/*                <div className="text-sm leading-6">
+                  <a
+                    href="#"
+                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+                  >
+                    Forgot password?
+                  </a>
+                </div>
+                */}
               </div>
 
               <div>
@@ -183,12 +194,12 @@ export default function Register() {
           </div>
 
           <p className="mt-10 text-center text-sm text-gray-500">
-            Already have account?{" "}
+            Not a member?{" "}
             <a
-              href="#"
+              href="#/register"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
-              Sign In Now
+              Register Now
             </a>
           </p>
         </div>

@@ -6,7 +6,7 @@ export default function Comment() {
   const [comments, setComments] = useState([]);
   async function fetchComments() {
     const result = await axios.get("http://localhost:80/api/comments");
-    setComments(result.data);
+    setComments(result.data.reverse());
   }
 
   useEffect(() => {
@@ -18,30 +18,30 @@ export default function Comment() {
   async function handlesubmit(event) {
     event.preventDefault();
     const token = localStorage.getItem("token");
-    const result = await axios({
-      method: "post",
-      url: "http://localhost:80/api/auth/me",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const user = result.data;
+    try {
+      const result = await axios({
+        method: "post",
+        url: "http://localhost:80/api/auth/me",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const user = result.data;
 
-    if (!user) {
-      console.error("user doesn't exists");
+      const result2 = await axios.post("http://localhost:80/api/comments", {
+        message,
+        user_id: user.id,
+      });
+    } finally {
+      await axios.post("http://localhost:80/api/comments", {
+        message,
+      });
+      await fetchComments();
+      setMessage("");
     }
-    const result2 = await axios.post("http://localhost:80/api/comments", {
-      message,
-      user_id: user.id,
-    });
-    console.log(result2);
     await fetchComments();
     setMessage("");
   }
   return (
     <div>
-      <div className="w-2/5 mx-auto ">
-        <Message comments={comments} setComments={setComments}></Message>
-      </div>
-
       <form>
         <textarea
           value={message}
@@ -53,6 +53,9 @@ export default function Comment() {
           submit
         </button>
       </form>
+      <div className="w-2/5 mx-auto mt-5 py-5">
+        <Message comments={comments} setComments={setComments}></Message>
+      </div>
     </div>
   );
 }

@@ -1,33 +1,21 @@
 import { useState } from "react";
 import axios from "axios";
 
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
-export default function Example() {
+export default function Register() {
   async function handleSubmit(event) {
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
+    const name = event.target.name.value;
+    const confirmPassword = event.target.confirmPassword.value;
 
-    const result = await axios.post("http://localhost:80/api/auth/login", {
+    const result = await axios.post("http://localhost:80/api/users", {
       email,
+      name,
       password,
+      confirm_password: confirmPassword,
     });
-    console.log(result);
-    localStorage.setItem("token", result.data.access_token);
-    console.log("success");
+    console.log(result.data);
   }
 
   return (
@@ -48,7 +36,7 @@ export default function Example() {
             alt="Your Company"
           />
           <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign in to your account
+            Register your account
           </h2>
         </div>
 
@@ -79,6 +67,22 @@ export default function Example() {
                   htmlFor="password"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
+                  Name
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="name"
+                    name="name"
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
                   Password
                 </label>
                 <div className="mt-2">
@@ -92,31 +96,23 @@ export default function Example() {
                   />
                 </div>
               </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Confirm Password
+                </label>
+                <div className="mt-2">
                   <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="confirmPassword"
+                    autoComplete="current-password"
+                    required
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
-                  <label
-                    htmlFor="remember-me"
-                    className="ml-3 block text-sm leading-6 text-gray-900"
-                  >
-                    Remember me
-                  </label>
                 </div>
-                {/*                <div className="text-sm leading-6">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
-                */}
               </div>
 
               <div>
@@ -187,12 +183,12 @@ export default function Example() {
           </div>
 
           <p className="mt-10 text-center text-sm text-gray-500">
-            Not a member?{" "}
+            Already have account?{" "}
             <a
-              href="#"
+              href="#/login"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
-              Register Now
+              Sign In Now
             </a>
           </p>
         </div>
