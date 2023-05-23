@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { FacebookProvider, useLogin } from "react-facebook";
+import FbLogin from "./FbLogin";
+import { useEffect, useState } from "react";
+import { request } from "./api";
+import axios from "axios";
+import Message from "./Message";
+import Login from "./login";
+import Register from "./Rigister";
+import Comment from "./Comment";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Comment></Comment>
+      <h1>Login</h1>
+      <Login></Login>
+      <h1>Register</h1>
+      <Register></Register>
     </div>
   );
 }
