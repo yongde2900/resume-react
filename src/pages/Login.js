@@ -28,10 +28,11 @@ export default function Example(props) {
       const password = event.target.password.value;
       const result = await login(email, password);
 
-      await localStorage.setItem("token", result.data.access_token);
+      localStorage.setItem("token", result.data.access_token);
+      navigate("/");
+
       const user = await fetchUser();
       setUser(user.data);
-      navigate("/");
     } catch (error) {
       console.log(error);
     }

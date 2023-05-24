@@ -1,10 +1,7 @@
 export default () => {
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center drop-shadow-md py-6">
-      <img
-        src="/profile.png"
-        className="rounded-full w-48 mb-6 drop-shadow-lg"
-      />
+      <img src="/self.png" className="rounded-full w-48 mb-6 drop-shadow-lg" />
       <h1 className="text-4xl font-bold text-gray-900 mb-2">Jimmy Lin</h1>
       <p className="text-xl font-medium text-gray-600 mb-6">
         Back-End Developer

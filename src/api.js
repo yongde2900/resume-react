@@ -1,7 +1,8 @@
 import axios from "axios";
+const api = process.env.REACT_APP_API;
 
 const request = axios.create({
-  baseUrl: "http://localhost:80/api/",
+  baseUrl: api,
   responsetype: "json",
   withcredentials: true,
   headers: {
@@ -11,39 +12,47 @@ const request = axios.create({
 });
 
 const fetchUser = () => {
-  return request.post("http://localhost:80/api/auth/me");
+  return request.post(`${api}/auth/me`);
 };
 const fetchComment = () => {
-  return request.get("http://localhost:80/api/comments");
+  return request.get(`${api}/comments`);
 };
-const postComment = async (message) => {
+const postComment = async (message, user) => {
   try {
-    const result = await fetchUser();
-    const user = result.data;
-    return await request.post("http://localhost:80/api/comments", {
+    console.log(message, user);
+    return await request.post(`${api}/comments`, {
       message,
       user_id: user.id,
     });
   } catch (e) {
-    return await request.post("http://localhost:80/api/comments", { message });
+    return await request.post(`${api}/comments`, { message });
   }
 };
 
 const deleteComment = async (id) => {
-  return await request.delete(`http://localhost:80/api/comments/${id}`);
+  return await request.delete(`${api}/comments/${id}`);
 };
 const editComment = async (id, message) => {
-  return await request.put(`http://localhost:80/api/comments/${id}`, {
+  return await request.put(`${api}/comments/${id}`, {
     message,
   });
 };
 
 const login = async (email, password) => {
-  return await request.post("http://localhost:80/api/auth/login", {
+  return await request.post(`${api}auth/login`, {
     email,
     password,
   });
 };
+const register = async (email, password, name, confirmPassword) => {
+  return await request.post(`${api}/users`, {
+    email,
+    password,
+    name,
+    confirm_password: confirmPassword,
+  });
+};
+
 export {
   request,
   fetchUser,
@@ -52,4 +61,5 @@ export {
   deleteComment,
   editComment,
   login,
+  register,
 };

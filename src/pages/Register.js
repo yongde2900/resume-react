@@ -1,7 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
+import { register } from "../api";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate();
   async function handleSubmit(event) {
     event.preventDefault();
     const email = event.target.email.value;
@@ -9,13 +12,10 @@ export default function Register() {
     const name = event.target.name.value;
     const confirmPassword = event.target.confirmPassword.value;
 
-    const result = await axios.post("http://localhost:80/api/users", {
-      email,
-      name,
-      password,
-      confirm_password: confirmPassword,
-    });
-    console.log(result.data);
+    const result = await register(email, password, name, confirmPassword);
+    if (result.status === 201) {
+      navigate("/login");
+    }
   }
 
   return (
@@ -107,7 +107,7 @@ export default function Register() {
                   <input
                     id="confirmPassword"
                     name="confirmPassword"
-                    type="confirmPassword"
+                    type="password"
                     autoComplete="current-password"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

@@ -18,8 +18,7 @@ const MessageBoard = (props) => {
   }, []);
 
   const handleAddMessage = async () => {
-    const result = await postComment(newMessage);
-    console.log(result.data);
+    const result = await postComment(newMessage, user);
     setMessages([...messages, result.data]);
     setNewMessage("");
   };
