@@ -19,7 +19,6 @@ const fetchComment = () => {
 };
 const postComment = async (message, user) => {
   try {
-    console.log(message, user);
     return await request.post(`${api}/comments`, {
       message,
       user_id: user.id,
@@ -39,7 +38,7 @@ const editComment = async (id, message) => {
 };
 
 const login = async (email, password) => {
-  return await request.post(`${api}auth/login`, {
+  return await request.post(`${api}/auth/login`, {
     email,
     password,
   });

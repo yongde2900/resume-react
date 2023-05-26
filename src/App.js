@@ -20,16 +20,21 @@ function App() {
         <HashRouter>
           <Nav user={user} setUser={setUser} className="w-full" />
 
-          <Routes className="rounded-3xl drop-shadow-md  max-w-4xl mx-auto ">
-            <Route path="/" element={<Home />} />
-            <Route path="Projects" element={<Projects />} />
-            <Route path="register" element={<Register />} />
-            <Route
-              path="login"
-              element={<Login user={user} setUser={setUser} />}
-            />
-            <Route path="messageBoard" element={<MessageBoard user={user} />} />
-          </Routes>
+          <div lassName="rounded-3xl drop-shadow-md  max-w-4xl mx-auto  ">
+            <Routes c>
+              <Route path="/" element={<Home />} />
+              <Route path="Projects" element={<Projects />} />
+              <Route path="register" element={<Register />} />
+              <Route
+                path="login"
+                element={<Login user={user} setUser={setUser} />}
+              />
+              <Route
+                path="messageBoard"
+                element={<MessageBoard user={user} />}
+              />
+            </Routes>
+          </div>
         </HashRouter>
         <Footer />
       </div>

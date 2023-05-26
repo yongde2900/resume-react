@@ -22,7 +22,7 @@ export default function Nav(props) {
     navigate("/login");
   }
   return (
-    <nav className="bg-gray-800 py-5 flex justify-between w-full sm: space-x-4 py-2  mb-5">
+    <nav className="bg-gray-800 py-5 flex justify-between w-full sm: space-x-4   ">
       <div>
         {[
           ["Home", "/#"],
